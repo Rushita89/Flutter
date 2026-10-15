@@ -1,0 +1,69 @@
+4.Place a FloatingActionButton at the bottom right of the screen that shows a plus (+) icon, and when tapped, displays a SnackBar with 
+the message 'Add new post!'.
+
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(
+    const MaterialApp(
+      title: 'InstaProfile',
+      debugShowCheckedModeBanner: false,
+      home: MyProfile(),
+    ),
+  );
+}
+
+class MyProfile extends StatelessWidget {
+  const MyProfile({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.deepPurple,
+
+      appBar: AppBar(
+        title: const Text('My Profile'),
+        backgroundColor: Colors.deepOrange,
+        foregroundColor: Colors.white,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () {
+              print('Search icon tapped');
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              print('Settings icon tapped');
+            },
+          ),
+        ],
+      ),
+
+      body: const Center(
+        child: Text(
+          'Welcome to My Profile!',
+          style: TextStyle(
+            fontSize: 24,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.deepOrange,
+        foregroundColor: Colors.white,
+        onPressed: () {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Add new post!'),
+            ),
+          );
+        },
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+}
