@@ -1,0 +1,89 @@
+4.Wrap a Container around a Spotify-style playlist card and style it with a green gradient background, rounded corners, and a shadow. Place the playlist title and 
+number of songs inside using Column and add padding.
+
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: SpotifyPlaylist(),
+    );
+  }
+}
+
+class SpotifyPlaylist extends StatelessWidget {
+  const SpotifyPlaylist({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        title: const Text('Spotify Playlist'),
+        backgroundColor: Colors.black,
+        foregroundColor: Colors.white,
+      ),
+      body: Center(
+        child: Container(
+          width: 300,
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            gradient: const LinearGradient(
+              colors: [
+                Color(0xFF1DB954),
+                Color(0xFF075E36),
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.green.withOpacity(0.4),
+                blurRadius: 12,
+                spreadRadius: 3,
+                offset: const Offset(0, 6),
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const [
+              Icon(
+                Icons.music_note,
+                color: Colors.white,
+                size: 45,
+              ),
+              SizedBox(height: 15),
+              Text(
+                'My Favorite Playlist',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(height: 8),
+              Text(
+                '25 Songs',
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: 16,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
