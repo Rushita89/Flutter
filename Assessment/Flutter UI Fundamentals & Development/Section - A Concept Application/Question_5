@@ -1,0 +1,9 @@
+Question: Would you use a StatelessWidget or StatefulWidget for this screen? Justify your choice clearly and explain the exact mechanism 
+by which calling setState() causes Flutter to re-draw only the affected portion of the widget tree.
+
+Answer:
+I would use a StatefulWidget because the cart screen's quantity and total price change when the user taps the '+' or '–' buttons.
+
+When setState() is called Flutter marks the corresponding widget as needing a rebuild. Flutter calls build() again and updates the 
+necessary parts of the widget tree while reusing unchanged elements. This allows the quantity and total price to update immediately 
+without navigating away from the screen.
