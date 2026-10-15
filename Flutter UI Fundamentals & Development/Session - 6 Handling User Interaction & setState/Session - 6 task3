@@ -1,0 +1,116 @@
+3.Implement a Flipkart-style product card with a product name and a 'Favorite' star icon. When the user taps anywhere on the card (not 
+just the icon), toggle the star between filled (yellow) and outlined (grey) using onTap and setState.<br><br><em><strong>Hint:</strong> 
+Wrap the card with a GestureDetector and update a boolean isFavorite.</em>
+
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Flipkart Product Card'),
+          backgroundColor: Colors.blue,
+          foregroundColor: Colors.white,
+        ),
+        body: const Center(
+          child: ProductCard(),
+        ),
+      ),
+    );
+  }
+}
+
+class ProductCard extends StatefulWidget {
+  const ProductCard({super.key});
+
+  @override
+  State<ProductCard> createState() => _ProductCardState();
+}
+
+class _ProductCardState extends State<ProductCard> {
+  bool isFavorite = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          isFavorite = !isFavorite;
+        });
+      },
+      child: Card(
+        elevation: 5,
+        margin: const EdgeInsets.all(16),
+        child: Container(
+          width: 280,
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.network(
+                'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400',
+                height: 150,
+                width: 200,
+                fit: BoxFit.contain,
+                errorBuilder: (context, error, stackTrace) {
+                  return const Icon(
+                    Icons.headphones,
+                    size: 120,
+                    color: Colors.blue,
+                  );
+                },
+              ),
+              const SizedBox(height: 12),
+              const Text(
+                'Wireless Headphones',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                'Price: ₹1,499',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.green,
+                ),
+              ),
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    isFavorite
+                        ? Icons.star
+                        : Icons.star_border,
+                    color: isFavorite
+                        ? Colors.yellow.shade700
+                        : Colors.grey,
+                    size: 30,
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    isFavorite
+                        ? 'Favorite'
+                        : 'Add to Favorite',
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
