@@ -1,0 +1,78 @@
+2.Build a simple Flipkart-style product card using StatelessWidget that shows a product image, name and price. Change the product name 
+and price by editing the code, then hot reload to see the update.
+
+import 'package:flutter/material.dart';
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Flipkart Product Card',
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Flipkart Product'),
+          backgroundColor: Colors.blue,
+        ),
+        body: const Center(
+          child: ProductCard(),
+        ),
+      ),
+    );
+  }
+}
+
+class ProductCard extends StatelessWidget {
+  const ProductCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 5,
+      margin: const EdgeInsets.all(20),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: SizedBox(
+        width: 220,
+        child: Padding(
+          padding: const EdgeInsets.all(12),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.network('https://rukminim1.flixcart.com/fk-p-flap/500/710/image/18bcff9b1100b3eb.jpg?q=80',
+                height: 150,
+                fit: BoxFit.cover,
+              ),
+              const SizedBox(height: 10),
+
+              // Product Name
+              const Text(
+                "iPhone 18 Pro",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+
+              const SizedBox(height: 8),
+
+              // Product Price
+              const Text(
+                "₹1,59,150",
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
