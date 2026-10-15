@@ -1,0 +1,11 @@
+Question: How would you design a Dart class to represent this order? Explain the role of the constructor, describe how you would create 
+multiple order objects in your program and explain how Dart's strong typing helps avoid data errors at compile time
+
+Answer:
+In a food delivery app I would design an Order class with properties such as order ID, food name, quantity and price. The constructor 
+initializes these properties when an order object is created.
+
+Multiple order objects can be created to represent different food orders such as pizza and burgers.
+
+Dart's strong typing ensures that each property receives the correct data type such as int for quantity and double for price. This helps 
+detect data errors at compile time and makes the application more reliable.
