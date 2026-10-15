@@ -1,0 +1,51 @@
+Task 2: Restaurant Menu Manager
+
+Build a Dart program that models a restaurant menu using a class and performs read, filter and lookup operations on List and Map 
+collections.
+
+->Define a MenuItem class with fields name (String), price (double) and isAvailable (bool) and a constructor that initialises all three 
+fields.
+->Create a List<MenuItem> containing at least 4 items and use a for-in loop to print each item's name, price and availability status.
+->Filter the list inside the loop and print only the items where isAvailable is true, along with their prices.
+->Store the same menu data in a Map<String, double> (item name › price) and print the price of one specific item retrieved by its name 
+key.
+
+class MenuItem {
+  String name;
+  double price;
+  bool isAvailable;
+
+  MenuItem(this.name, this.price, this.isAvailable);
+}
+
+void main() {
+  List<MenuItem> menu = [
+    MenuItem("Pizza", 250.0, true),
+    MenuItem("Burger", 120.0, true),
+    MenuItem("Pasta", 180.0, false),
+    MenuItem("Sandwich", 100.0, true),
+  ];
+
+  print("===== Restaurant Menu =====");
+
+  for (MenuItem item in menu) {
+    print(
+      "Name: ${item.name}, "
+      "Price: Rs. ${item.price}, "
+      "Available: ${item.isAvailable}"
+    );
+
+    if (item.isAvailable) {
+      print("Available Item: ${item.name} - Rs. ${item.price}");
+    }
+  }
+
+  Map<String, double> menuPrices = {
+    for (MenuItem item in menu) item.name: item.price,
+  };
+
+  String searchItem = "Pizza";
+
+  print("\n===== Price Lookup =====");
+  print("$searchItem Price: Rs. ${menuPrices[searchItem]}");
+}
