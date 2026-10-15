@@ -1,0 +1,43 @@
+1.Create a new Flutter app called InstaProfile and set up the main.dart file using MaterialApp with the app title 'InstaProfile' and a 
+purple primarySwatch.
+
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'InstaProfile',
+      theme: ThemeData(
+        primarySwatch: Colors.purple,
+      ),
+      home: const HomeScreen(),
+      debugShowCheckedModeBanner: false,
+    );
+  }
+}
+
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('InstaProfile'),
+      ),
+      body: const Center(
+        child: Text(
+          'Welcome to InstaProfile!',
+          style: TextStyle(fontSize: 22),
+        ),
+      ),
+    );
+  }
+}
