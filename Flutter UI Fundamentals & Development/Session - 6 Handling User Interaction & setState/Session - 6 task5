@@ -1,0 +1,100 @@
+5.Refactor your code from any of the above tasks to extract the setState logic into a separate method (e.g., updateVote or 
+toggleFavorite) and call this method from the appropriate callback.<br><br><em><strong>Constraint:</strong> The setState call should only 
+appear inside your new method, not directly in the onPressed/onTap callback.</em>
+
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Playlist Voting'),
+          backgroundColor: Colors.blue,
+          foregroundColor: Colors.white,
+        ),
+        body: const Center(
+          child: PlaylistVoting(),
+        ),
+      ),
+    );
+  }
+}
+
+class PlaylistVoting extends StatefulWidget {
+  const PlaylistVoting({super.key});
+
+  @override
+  State<PlaylistVoting> createState() => _PlaylistVotingState();
+}
+
+class _PlaylistVotingState extends State<PlaylistVoting> {
+  int voteCount = 0;
+
+  // Separate method to update votes
+  void updateVote(int value) {
+    setState(() {
+      voteCount += value;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const Icon(
+          Icons.music_note,
+          size: 70,
+          color: Colors.blue,
+        ),
+        const SizedBox(height: 10),
+        const Text(
+          'Kesariya - Arijit Singh',
+          style: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 20),
+        Text(
+          'Votes: $voteCount',
+          style: const TextStyle(fontSize: 20),
+        ),
+        const SizedBox(height: 20),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ElevatedButton.icon(
+              onPressed: () => updateVote(1),
+              icon: const Icon(Icons.thumb_up),
+              label: const Text('Upvote'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green,
+                foregroundColor: Colors.white,
+              ),
+            ),
+            const SizedBox(width: 15),
+            ElevatedButton.icon(
+              onPressed: () => updateVote(-1),
+              icon: const Icon(Icons.thumb_down),
+              label: const Text('Downvote'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                foregroundColor: Colors.white,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
