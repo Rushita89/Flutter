@@ -1,0 +1,168 @@
+Step 2 — Test and debug without AI
+
+Bug to investigate: The original code allows the user to place an order even when the list is empty.
+
+1 The exact prompt(s) you gave the AI tool:
+Review the Flutter QuickBite food ordering screen generated in Step 1. Identify at least one bug, limitation or possible improvement in 
+the code. Explain the problem and suggest a correction. The screen should display food items using ListView.builder, calculate the total 
+order amount dynamically, update the order status to 'Order Placed ›' using setState() and show 'Your cart is empty' when there are no 
+items in the list.
+
+2 The AI's original code and your corrected version:
+
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MaterialApp(
+    debugShowCheckedModeBanner: false,
+    home: QuickBiteOrder(),
+  ));
+}
+
+class QuickBiteOrder extends StatefulWidget {
+  const QuickBiteOrder({super.key});
+
+  @override
+  State<QuickBiteOrder> createState() => _QuickBiteOrderState();
+}
+
+class _QuickBiteOrderState extends State<QuickBiteOrder> {
+  final List<Map<String, dynamic>> orders = [
+    {'name': 'Cheese Pizza', 'quantity': 2, 'price': 220.0},
+    {'name': 'Veg Sandwich', 'quantity': 3, 'price': 80.0},
+    {'name': 'Cold Coffee', 'quantity': 1, 'price': 110.0},
+  ];
+
+  String orderStatus = 'Waiting for confirmation';
+
+  double calculateTotal() {
+    double total = 0;
+
+    for (final food in orders) {
+      total += (food['quantity'] as int) *
+          (food['price'] as double);
+    }
+
+    return total;
+  }
+
+  void removeFood(int index) {
+    setState(() {
+      orders.removeAt(index);
+      orderStatus = 'Waiting for confirmation';
+    });
+  }
+
+  void placeOrder() {
+    if (orders.isEmpty) {
+      return;
+    }
+
+    setState(() {
+      orderStatus = 'Order Placed ›';
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xFFFFF8F0),
+      appBar: AppBar(
+        title: const Text('QuickBite Orders'),
+        backgroundColor: const Color(0xFFB71C1C),
+        foregroundColor: Colors.white,
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: orders.isEmpty
+                ? const Center(
+                    child: Text(
+                      'Your cart is empty',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  )
+                : ListView.builder(
+                    itemCount: orders.length,
+                    itemBuilder: (context, index) {
+                      final food = orders[index];
+
+                      return Card(
+                        margin: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 6,
+                        ),
+                        child: ListTile(
+                          leading: const Icon(
+                            Icons.restaurant_menu,
+                            color: Color(0xFFB71C1C),
+                          ),
+                          title: Text(food['name'] as String),
+                          subtitle: Text(
+                            'Quantity: ${food['quantity']}',
+                          ),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                '₹${(food['price'] as double).toStringAsFixed(2)}',
+                              ),
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.delete_outline,
+                                  color: Colors.red,
+                                ),
+                                onPressed: () => removeFood(index),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+          ),
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(16),
+            color: Colors.white,
+            child: Column(
+              children: [
+                Text(
+                  'Total: ₹${calculateTotal().toStringAsFixed(2)}',
+                  style: const TextStyle(
+                    fontSize: 23,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: orders.isEmpty ? null : placeOrder,
+                    child: const Text('Place Order'),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  orderStatus,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    color: Colors.green,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+3 A 3–4 line note explaining what you changed and why the AI's version needed it:
+While testing the original code, I found that an order could be confirmed even when no food items were available. I corrected this by 
+disabling the Place Order button when the list is empty and checking the list before changing the status. I also added a Remove button 
+to test how the total and empty-cart message behave when all items are deleted.
