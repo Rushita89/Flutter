@@ -1,0 +1,100 @@
+2.Build a simple playlist voting feature: show a song name and two buttons, 'Upvote' and 'Downvote'. When the user presses either button, 
+update and display the current vote count in real time using setState.<br><br><em><strong>Hint:</strong> Use onPressed for the buttons and 
+update a voteCount variable inside setState.</em>
+
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Playlist Voting'),
+          backgroundColor: Colors.blue,
+        ),
+        body: const Center(
+          child: PlaylistVoting(),
+        ),
+      ),
+    );
+  }
+}
+
+class PlaylistVoting extends StatefulWidget {
+  const PlaylistVoting({super.key});
+
+  @override
+  State<PlaylistVoting> createState() => _PlaylistVotingState();
+}
+
+class _PlaylistVotingState extends State<PlaylistVoting> {
+  int voteCount = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const Icon(
+          Icons.music_note,
+          size: 70,
+          color: Colors.blue,
+        ),
+        const SizedBox(height: 10),
+        const Text(
+          'Kesariya - Arijit Singh',
+          style: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 20),
+        Text(
+          'Votes: $voteCount',
+          style: const TextStyle(fontSize: 20),
+        ),
+        const SizedBox(height: 20),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ElevatedButton.icon(
+              onPressed: () {
+                setState(() {
+                  voteCount++;
+                });
+              },
+              icon: const Icon(Icons.thumb_up),
+              label: const Text('Upvote'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green,
+                foregroundColor: Colors.white,
+              ),
+            ),
+            const SizedBox(width: 15),
+            ElevatedButton.icon(
+              onPressed: () {
+                setState(() {
+                  voteCount--;
+                });
+              },
+              icon: const Icon(Icons.thumb_down),
+              label: const Text('Downvote'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                foregroundColor: Colors.white,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
