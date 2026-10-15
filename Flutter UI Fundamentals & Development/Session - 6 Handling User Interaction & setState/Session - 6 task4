@@ -1,0 +1,94 @@
+4.Create a Zomato-style rating bar with 5 stars. When the user taps on any star, fill all stars up to that one and update the displayed 
+rating using setState.
+
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('Zomato Rating Bar'),
+          backgroundColor: Colors.red,
+          foregroundColor: Colors.white,
+        ),
+        body: const Center(
+          child: RatingBar(),
+        ),
+      ),
+    );
+  }
+}
+
+class RatingBar extends StatefulWidget {
+  const RatingBar({super.key});
+
+  @override
+  State<RatingBar> createState() => _RatingBarState();
+}
+
+class _RatingBarState extends State<RatingBar> {
+  int rating = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const Icon(
+          Icons.restaurant,
+          size: 70,
+          color: Colors.red,
+        ),
+        const SizedBox(height: 10),
+        const Text(
+          'Rate Your Restaurant',
+          style: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 20),
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: List.generate(5, (index) {
+            return IconButton(
+              onPressed: () {
+                setState(() {
+                  rating = index + 1;
+                });
+              },
+              icon: Icon(
+                index < rating
+                    ? Icons.star
+                    : Icons.star_border,
+                color: index < rating
+                    ? Colors.orange
+                    : Colors.grey,
+                size: 38,
+              ),
+            );
+          }),
+        ),
+        const SizedBox(height: 10),
+        Text(
+          rating == 0
+              ? 'Select your rating'
+              : 'Your Rating: $rating / 5',
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    );
+  }
+}
