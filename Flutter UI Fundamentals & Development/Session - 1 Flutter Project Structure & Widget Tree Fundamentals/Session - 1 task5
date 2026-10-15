@@ -1,0 +1,16 @@
+5.Break down the widget tree of the main screen of your Flutter project by drawing or listing the parent-child relationship from 
+MaterialApp down to the smallest widget you see.<br><br><em><strong>Hint:</strong> Start with MaterialApp, then Scaffold, then 
+Column/Row, then Text/Icon, etc.</em>
+
+MaterialApp
+└── MyApp (StatefulWidget)
+    └── Scaffold
+        ├── AppBar
+        │   └── Text
+        │       └── "Cafe Dashboard"
+        │
+        └── Body
+            └── Center
+                └── UserGreeting (StatelessWidget)
+                    └── Text
+                        └── "Hello, Flutter Learner!"
