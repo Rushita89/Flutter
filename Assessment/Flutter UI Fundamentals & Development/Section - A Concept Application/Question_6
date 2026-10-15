@@ -1,0 +1,17 @@
+Question: Which Flutter layout widgets would you use to structure this card so it looks consistent across screen sizes? Explain how 
+MediaQuery, Expanded or Flexible can be used to replace fixed pixel dimensions and make the card responsive.
+
+Answer:
+I would use Card, Column, Row, Expanded and Flexible to create a responsive restaurant card.
+-> Card: Provides the restaurant card design.
+
+-> Column: Arranges the image, restaurant name and cuisine vertically.
+
+-> Row: Places the text and “Order Now” button horizontally.
+
+-> MediaQuery: Gets the screen size to adjust the card dimensions according to the device.
+
+-> Expanded and Flexible: Distribute available space and prevent text or images from stretching awkwardly.
+
+Instead of fixed pixel dimensions I would use screen width and flexible layouts to ensure the restaurant card looks consistent on both 
+small and large screens.
