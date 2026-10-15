@@ -1,0 +1,53 @@
+Task 1: Order Confirmation Generator
+
+Write a Dart console program that takes food order details and prints a formatted confirmation message with a delivery tier and order 
+status label.
+
+->Declare variables for order ID (int), customer name (String), number of items (int) and total amount (double) with realistic sample 
+values.
+->Use string interpolation to print a formatted order confirmation that includes all four values in a readable message.
+->Use an if-else statement to print the delivery tier: 'Express Delivery' if the total amount exceeds Rs 500 otherwise 'Standard 
+Delivery'.
+->Use a switch statement to print a status label based on a status code variable: 'Preparing' for 1,'Out for Delivery' for 2, 
+'Delivered' for 3.
+
+void main() 
+{
+  int orderId = 101;
+  String customerName = "Rushita";
+  int numberOfItems = 3;
+  double totalAmount = 650.0;
+  int statusCode = 1;
+
+  // Order Confirmation
+  print("===== Order Confirmation =====");
+  print("Order ID: $orderId");
+  print("Customer Name: $customerName");
+  print("Number of Items: $numberOfItems");
+  print("Total Amount: Rs. $totalAmount");
+
+  // Delivery Tier
+  if (totalAmount > 500) {
+    print("Delivery Tier: Express Delivery");
+  } else {
+    print("Delivery Tier: Standard Delivery");
+  }
+
+  // Order Status
+  switch (statusCode) {
+    case 1:
+      print("Order Status: Preparing");
+      break;
+    case 2:
+      print("Order Status: Out for Delivery");
+      break;
+    case 3:
+      print("Order Status: Delivered");
+      break;
+    default:
+      print("Order Status: Invalid Status Code");
+  }
+
+  print("==============================");
+}
+
