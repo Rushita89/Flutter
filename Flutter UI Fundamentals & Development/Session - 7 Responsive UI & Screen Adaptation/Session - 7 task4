@@ -1,0 +1,94 @@
+4.Identify and fix the issue in this code: a WhatsApp-style chat bubble is overflowing on small screens because its width is set to 400. 
+Update it to use MediaQuery so the bubble never exceeds 80% of the screen width.<br><br><em><strong>Constraint:</strong> Do not use any 
+fixed pixel values for width.</em>
+
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('WhatsApp Chat Bubble'),
+          backgroundColor: Colors.green,
+          foregroundColor: Colors.white,
+        ),
+        body: const ChatScreen(),
+      ),
+    );
+  }
+}
+
+class ChatScreen extends StatelessWidget {
+  const ChatScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // Calculate 80% of the screen width
+    final double maxBubbleWidth =
+        MediaQuery.of(context).size.width * 0.8;
+
+    return Container(
+      width: double.infinity,
+      color: Colors.grey.shade200,
+      padding: const EdgeInsets.all(12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            constraints: BoxConstraints(
+              maxWidth: maxBubbleWidth,
+            ),
+            padding: const EdgeInsets.all(12),
+            decoration: const BoxDecoration(
+              color: Color(0xFFDCF8C6),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(12),
+                topRight: Radius.circular(12),
+                bottomRight: Radius.circular(12),
+              ),
+            ),
+            child: const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Hello!',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                SizedBox(height: 5),
+                Text(
+                  'How are you? This is a WhatsApp-style '
+                      'chat bubble that adjusts to your screen '
+                      'size and prevents horizontal overflow.',
+                  style: TextStyle(fontSize: 15),
+                ),
+                SizedBox(height: 5),
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: Text(
+                    '10:30 AM',
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: Colors.black54,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
