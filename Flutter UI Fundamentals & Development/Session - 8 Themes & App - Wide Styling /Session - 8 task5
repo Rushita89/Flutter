@@ -1,0 +1,116 @@
+5.Build a reusable SongTile widget that displays a song name and an 'Add to Playlist' button, and ensure both use the app-wide styles 
+from your ThemeData for text and buttons.
+
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyMusicTheme());
+}
+
+class MyMusicTheme extends StatelessWidget {
+  const MyMusicTheme({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+
+      // App-wide styles
+      theme: ThemeData(
+        primaryColor: Colors.purple,
+
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.purple,
+          foregroundColor: Colors.white,
+        ),
+
+        textTheme: const TextTheme(
+          titleMedium: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.purple,
+          ),
+        ),
+
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.green,
+            foregroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
+            ),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20,
+              vertical: 12,
+            ),
+          ),
+        ),
+      ),
+
+      home: const MusicHomePage(),
+    );
+  }
+}
+
+// Reusable SongTile widget
+class SongTile extends StatelessWidget {
+  final String songName;
+
+  const SongTile({
+    super.key,
+    required this.songName,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.all(10),
+      child: ListTile(
+        leading: const Icon(
+          Icons.music_note,
+          color: Colors.purple,
+          size: 30,
+        ),
+
+        // Uses the global text theme
+        title: Text(
+          songName,
+          style: Theme.of(context).textTheme.titleMedium,
+        ),
+
+        // Uses the global ElevatedButton theme
+        trailing: ElevatedButton(
+          onPressed: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('$songName added to playlist!'),
+              ),
+            );
+          },
+          child: const Text('Add to Playlist'),
+        ),
+      ),
+    );
+  }
+}
+
+class MusicHomePage extends StatelessWidget {
+  const MusicHomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('My Music'),
+      ),
+      body: ListView(
+        children: const [
+          SongTile(songName: 'Kesariya'),
+          SongTile(songName: 'Tum Hi Ho'),
+          SongTile(songName: 'Apna Bana Le'),
+          SongTile(songName: 'Channa Mereya'),
+        ],
+      ),
+    );
+  }
+}
