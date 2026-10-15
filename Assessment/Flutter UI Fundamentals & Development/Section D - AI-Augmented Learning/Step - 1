@@ -1,0 +1,189 @@
+STEP 1 · BUILD WITH AI
+
+Use an AI tool of your choice (ChatGPT, Claude, GitHub Copilot, etc.) to help you write a Flutter screen that:
+->Displays a list of ordered food items — each showing item name, quantity, and unit price — using ListView.builder inside a 
+StatefulWidget.
+->Computes and shows the total order amount dynamically based on the items currently in the list.
+->Includes a 'Place Order' button that calls setState() to update an order status Text widget to 'Order Placed ›' when tapped.
+->Handles the edge case where the item list is empty and displays a 'Your cart is empty' message centred on the screen instead of an empty ListView.
+
+1. Exact prompt given to AI:
+Create a Flutter food ordering screen for QuickBite using StatefulWidget. Use ListView.builder to display a list of ordered food items 
+with each item's name, quantity and unit price. Calculate the total cost by multiplying each item's quantity by its price and adding all
+item costs. Add a Place Order button that updates a status Text widget to "Order Placed ›" using setState(). If the list is empty, show 
+"Your cart is empty" centered on the screen. Use a dark red and cream color theme and provide complete runnable code in main.dart.
+
+2. AI's original code:
+
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MaterialApp(
+    debugShowCheckedModeBanner: false,
+    home: OrderScreen(),
+  ));
+}
+
+class FoodItem {
+  String name;
+  int quantity;
+  double price;
+
+  FoodItem({
+    required this.name,
+    required this.quantity,
+    required this.price,
+  });
+}
+
+class OrderScreen extends StatefulWidget {
+  const OrderScreen({super.key});
+
+  @override
+  State<OrderScreen> createState() => _OrderScreenState();
+}
+
+class _OrderScreenState extends State<OrderScreen> {
+  List<FoodItem> orders = [
+    FoodItem(name: 'Cheese Pizza', quantity: 2, price: 220),
+    FoodItem(name: 'Veg Sandwich', quantity: 3, price: 80),
+    FoodItem(name: 'Cold Coffee', quantity: 1, price: 110),
+  ];
+
+  String orderStatus = 'Waiting for confirmation';
+
+  double calculateTotal() {
+    double total = 0;
+
+    for (var item in orders) {
+      total += item.quantity * item.price;
+    }
+
+    return total;
+  }
+
+  void placeOrder() {
+    setState(() {
+      orderStatus = 'Order Placed ›';
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('QuickBite - My Order'),
+        backgroundColor: const Color(0xFFB71C1C),
+        foregroundColor: Colors.white,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            const Text(
+              'Your Ordered Food',
+              style: TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+
+            const SizedBox(height: 10),
+
+            Expanded(
+              child: orders.isEmpty
+                  ? const Center(
+                child: Text(
+                  'Your cart is empty',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.grey,
+                  ),
+                ),
+              )
+                  : ListView.builder(
+                itemCount: orders.length,
+                itemBuilder: (context, index) {
+                  final item = orders[index];
+
+                  return Card(
+                    child: ListTile(
+                      leading: const Icon(
+                        Icons.fastfood,
+                        color: Color(0xFFB71C1C),
+                      ),
+                      title: Text(
+                        item.name,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      subtitle: Text(
+                        'Quantity: ${item.quantity}',
+                      ),
+                      trailing: Text(
+                        '₹${item.price.toStringAsFixed(2)}',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+
+            const Divider(),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Total Amount:',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  '₹${calculateTotal().toStringAsFixed(2)}',
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFFB71C1C),
+                  ),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 10),
+
+            Text(
+              orderStatus,
+              style: const TextStyle(
+                fontSize: 18,
+                color: Colors.green,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+
+            const SizedBox(height: 10),
+
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: orders.isEmpty ? null : placeOrder,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFFB71C1C),
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.all(15),
+                ),
+                child: const Text('Place Order'),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
