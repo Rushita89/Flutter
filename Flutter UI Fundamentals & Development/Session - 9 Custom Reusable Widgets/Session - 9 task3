@@ -1,0 +1,238 @@
+3.Build a reusable OfferBanner widget that takes an image URL and offer text as parameters and displays them together. Use this widget at
+the top of both a food delivery home screen and a shopping deals screen to demonstrate reusability.
+
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(
+    MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: const HomeScreen(),
+    ),
+  );
+}
+
+// Reusable OfferBanner widget
+class OfferBanner extends StatelessWidget {
+  final String imageUrl;
+  final String offerText;
+
+  const OfferBanner({
+    super.key,
+    required this.imageUrl,
+    required this.offerText,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 180,
+      width: double.infinity,
+      margin: const EdgeInsets.all(15),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(15),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            Image.network(
+              imageUrl,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  color: Colors.orange,
+                  child: const Icon(
+                    Icons.local_offer,
+                    size: 60,
+                    color: Colors.white,
+                  ),
+                );
+              },
+            ),
+            Container(
+              color: Colors.black.withValues(alpha: 0.4),
+            ),
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Text(
+                  offerText,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// Main screen with both sections
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Offers & Deals'),
+          backgroundColor: Colors.deepOrange,
+          foregroundColor: Colors.white,
+          bottom: const TabBar(
+            indicatorColor: Colors.white,
+            labelColor: Colors.white,
+            tabs: [
+              Tab(
+                icon: Icon(Icons.restaurant),
+                text: 'Food Delivery',
+              ),
+              Tab(
+                icon: Icon(Icons.shopping_bag),
+                text: 'Shopping Deals',
+              ),
+            ],
+          ),
+        ),
+        body: const TabBarView(
+          children: [
+            FoodHomeScreen(),
+            ShoppingDealsScreen(),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// Food delivery screen
+class FoodHomeScreen extends StatelessWidget {
+  const FoodHomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: const [
+        OfferBanner(
+          imageUrl:
+          'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800',
+          offerText: '50% OFF on Your First Food Order!',
+        ),
+        Padding(
+          padding: EdgeInsets.all(15),
+          child: Text(
+            'Popular Food',
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        ListTile(
+          leading: Icon(
+            Icons.local_pizza,
+            color: Colors.deepOrange,
+            size: 35,
+          ),
+          title: Text('Pizza'),
+          subtitle: Text('Delicious cheesy pizza'),
+          trailing: Text('₹199'),
+        ),
+        ListTile(
+          leading: Icon(
+            Icons.lunch_dining,
+            color: Colors.deepOrange,
+            size: 35,
+          ),
+          title: Text('Burger'),
+          subtitle: Text('Fresh and tasty burgers'),
+          trailing: Text('₹149'),
+        ),
+        ListTile(
+          leading: Icon(
+            Icons.local_cafe,
+            color: Colors.deepOrange,
+            size: 35,
+          ),
+          title: Text('Coffee'),
+          subtitle: Text('Hot and fresh coffee'),
+          trailing: Text('₹99'),
+        ),
+      ],
+    );
+  }
+}
+
+// Shopping deals screen
+class ShoppingDealsScreen extends StatelessWidget {
+  const ShoppingDealsScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: const [
+        OfferBanner(
+          imageUrl:
+          'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800',
+          offerText: 'MEGA SALE! Up to 70% OFF',
+        ),
+        Padding(
+          padding: EdgeInsets.all(15),
+          child: Text(
+            'Top Shopping Deals',
+            style: TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        ListTile(
+          leading: Icon(
+            Icons.checkroom,
+            color: Colors.blue,
+            size: 35,
+          ),
+          title: Text('Fashion & Clothing'),
+          subtitle: Text('Latest styles at great prices'),
+          trailing: Text('50% OFF'),
+        ),
+        ListTile(
+          leading: Icon(
+            Icons.watch,
+            color: Colors.blue,
+            size: 35,
+          ),
+          title: Text('Watches & Accessories'),
+          subtitle: Text('Explore amazing deals'),
+          trailing: Text('40% OFF'),
+        ),
+        ListTile(
+          leading: Icon(
+            Icons.headphones,
+            color: Colors.blue,
+            size: 35,
+          ),
+          title: Text('Electronics'),
+          subtitle: Text('Headphones and gadgets'),
+          trailing: Text('30% OFF'),
+        ),
+        ListTile(
+          leading: Icon(
+            Icons.shopping_bag,
+            color: Colors.blue,
+            size: 35,
+          ),
+          title: Text('Shopping Bags'),
+          subtitle: Text('Special prices on selected bags'),
+          trailing: Text('60% OFF'),
+        ),
+      ],
+    );
+  }
+}
