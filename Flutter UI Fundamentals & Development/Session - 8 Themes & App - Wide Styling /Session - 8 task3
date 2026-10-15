@@ -1,0 +1,118 @@
+3.Design a custom button style in your ThemeData so that all ElevatedButtons in your app have rounded corners and a green background by 
+default.
+
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyMusicTheme());
+}
+
+class MyMusicTheme extends StatelessWidget {
+  const MyMusicTheme({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'MyMusicTheme',
+      debugShowCheckedModeBanner: false,
+
+      theme: ThemeData(
+        fontFamily: 'Poppins',
+        primaryColor: Colors.purple,
+
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.purple,
+          primary: Colors.purple,
+          secondary: Colors.orange,
+        ),
+
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.purple,
+          foregroundColor: Colors.white,
+        ),
+
+        // Global ElevatedButton style
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.green,
+            foregroundColor: Colors.white,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 30,
+              vertical: 15,
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+          ),
+        ),
+      ),
+
+      home: const HomeScreen(),
+    );
+  }
+}
+
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  bool isPlaying = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('MyMusicTheme'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(
+              Icons.music_note,
+              size: 100,
+              color: Colors.purple,
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              'Welcome to My Music',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  isPlaying = !isPlaying;
+                });
+              },
+              child: Text(
+                isPlaying ? 'Playing Music...' : 'Play Music',
+              ),
+            ),
+
+            const SizedBox(height: 15),
+
+            ElevatedButton(
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Explore your music!'),
+                  ),
+                );
+              },
+              child: const Text('Explore Music'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
