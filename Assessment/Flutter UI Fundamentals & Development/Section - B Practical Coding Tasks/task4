@@ -1,0 +1,411 @@
+Task 4: Food Delivery Home Screen
+
+Build a styled Flutter home screen for a food delivery app that combines layout widgets,app-wide theming and navigation to a restaurant 
+detail screen.
+
+->Create a MaterialApp with a ThemeData that sets a primary colour, an accent colour and a default text style; apply it to a Scaffold 
+with an AppBar titled 'QuickBite'.
+->Use Row, Column and Container widgets with explicit padding and margin to build a restaurant card that shows an icon placeholder, 
+restaurant name and a star rating text.
+->Add an ElevatedButton labelled 'View Menu' that uses Navigator.push to open a RestaurantDetailScreen.
+->Pass the restaurant name as a constructor argument to RestaurantDetailScreen and display it in that screen's AppBar title and body.
+
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(QuickBiteApp());
+}
+
+class QuickBiteApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'QuickBite',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Color(0xFFB71C1C),
+        ),
+        scaffoldBackgroundColor: Color(0xFFFFF8F0),
+        appBarTheme: AppBarTheme(
+          backgroundColor: Color(0xFFB71C1C),
+          foregroundColor: Colors.white,
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Color(0xFFB71C1C),
+            foregroundColor: Colors.white,
+            padding: EdgeInsets.symmetric(
+              horizontal: 18,
+              vertical: 12,
+            ),
+          ),
+        ),
+        useMaterial3: true,
+      ),
+      home: HomeScreen(),
+    );
+  }
+}
+
+// HOME SCREEN
+class HomeScreen extends StatefulWidget {
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'QuickBite',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
+        
+      ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Discover Restaurants',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF4E342E),
+              ),
+            ),
+            SizedBox(height: 6),
+            Text(
+              'Delicious food delivered to your door.',
+              style: TextStyle(
+                fontSize: 15,
+                color: Colors.black54,
+              ),
+            ),
+            SizedBox(height: 20),
+
+            // Restaurant Card
+            Card(
+              color: Colors.white,
+              elevation: 4,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              clipBehavior: Clip.antiAlias,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    height: 150,
+                    width: double.infinity,
+                    color: Color(0xFFFFE0B2),
+                    child: Icon(
+                      Icons.restaurant,
+                      size: 80,
+                      color: Color(0xFFB71C1C),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Spice Garden',
+                          style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        SizedBox(height: 6),
+                        Text(
+                          'Indian • Chinese',
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.black54,
+                          ),
+                        ),
+                        SizedBox(height: 8),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                              size: 20,
+                            ),
+                            SizedBox(width: 4),
+                            Text('4.5 Rating'),
+                            Spacer(),
+
+                          ],
+                        ),
+                        SizedBox(height: 16),
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      RestaurantDetailScreen(
+                                        restaurantName: 'Spice Garden',
+                                      ),
+                                ),
+                              );
+                            },
+                            child: Text('View Menu'),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// RESTAURANT MENU SCREEN
+class RestaurantDetailScreen extends StatefulWidget {
+  final String restaurantName;
+
+  RestaurantDetailScreen({
+    required this.restaurantName,
+  });
+
+  @override
+  State<RestaurantDetailScreen> createState() =>
+      _RestaurantDetailScreenState();
+}
+
+class _RestaurantDetailScreenState
+    extends State<RestaurantDetailScreen> {
+  final List<Map<String, dynamic>> menuItems = [
+    {
+      'name': 'Paneer Pizza',
+      'price': 249,
+      'icon': Icons.local_pizza,
+    },
+    {
+      'name': 'Veg Burger',
+      'price': 129,
+      'icon': Icons.lunch_dining,
+    },
+    {
+      'name': 'White Sauce Pasta',
+      'price': 199,
+      'icon': Icons.dinner_dining,
+    },
+    {
+      'name': 'Veg Sandwich',
+      'price': 99,
+      'icon': Icons.breakfast_dining,
+    },
+    {
+      'name': 'French Fries',
+      'price': 89,
+      'icon': Icons.fastfood,
+    },
+  ];
+
+  final List<Map<String, dynamic>> selectedItems = [];
+
+  int get totalPrice {
+    int total = 0;
+
+    for (var item in selectedItems) {
+      total += item['price'] as int;
+    }
+
+    return total;
+  }
+
+  void addItem(Map<String, dynamic> item) {
+    setState(() {
+      selectedItems.add(item);
+    });
+  }
+
+  void removeItem(Map<String, dynamic> item) {
+    setState(() {
+      selectedItems.remove(item);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.restaurantName),
+      ),
+      body: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.all(16),
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Our Menu',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF4E342E),
+                ),
+              ),
+            ),
+          ),
+
+          // Food Items
+          Expanded(
+            child: ListView.builder(
+              padding: EdgeInsets.symmetric(horizontal: 12),
+              itemCount: menuItems.length,
+              itemBuilder: (context, index) {
+                final item = menuItems[index];
+                final isSelected = selectedItems.contains(item);
+
+                return Card(
+                  color: Colors.white,
+                  margin: EdgeInsets.only(bottom: 10),
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      backgroundColor: Color(0xFFFFEBEE),
+                      child: Icon(
+                        item['icon'] as IconData,
+                        color: Color(0xFFB71C1C),
+                      ),
+                    ),
+                    title: Text(
+                      item['name'] as String,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    subtitle: Text('₹${item['price']}'),
+                    trailing: ElevatedButton(
+                      onPressed: () {
+                        if (isSelected) {
+                          removeItem(item);
+                        } else {
+                          addItem(item);
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: isSelected
+                            ? Colors.grey
+                            : Color(0xFFB71C1C),
+                        foregroundColor: Colors.white,
+                        padding: EdgeInsets.symmetric(horizontal: 12),
+                      ),
+                      child: Text(
+                        isSelected ? 'Remove' : 'Add +',
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+
+          // Selected Items and Total
+          Container(
+            width: double.infinity,
+            padding: EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border(
+                top: BorderSide(
+                  color: Color(0xFFB71C1C),
+                  width: 2,
+                ),
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  'Selected Items',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFFB71C1C),
+                  ),
+                ),
+                SizedBox(height: 8),
+
+                if (selectedItems.isEmpty)
+                  Text(
+                    'No food items selected yet.',
+                    style: TextStyle(color: Colors.black54),
+                  )
+                else
+                  ConstrainedBox(
+                    constraints: BoxConstraints(maxHeight: 110),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: selectedItems.length,
+                      itemBuilder: (context, index) {
+                        final item = selectedItems[index];
+
+                        return Padding(
+                          padding: EdgeInsets.symmetric(vertical: 3),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(item['name'] as String),
+                              ),
+                              Text(
+                                '₹${item['price']}',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+
+                Divider(height: 20),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Total Price',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      '₹$totalPrice',
+                      style: TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFFB71C1C),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
