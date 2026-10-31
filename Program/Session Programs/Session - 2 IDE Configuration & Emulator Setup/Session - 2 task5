@@ -1,0 +1,13 @@
+No.                                   Emulator                                               Real Android Device
+1. Speed		          The emulator may run slower because it               The app generally runs more naturally according to the phone's 
+                      uses computer resources such as RAM and CPU.         hardware.
+
+2. Device Features    Some features such as GPS, camera, sensors           Real hardware features can be tested directly such as the 
+                      and Bluetooth are simulated or limited.              camera,GPS and sensors.
+                                      
+3. Debugging          It is easy to take screenshots, change screen        Testing happens on actual hardware, helping identify real-world 
+                      sizes and test different Android versions.           issues such as device compatibility and performance.                                                               
+
+                              
+		
+		
