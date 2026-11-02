@@ -1,0 +1,31 @@
+Use an AI tool like ChatGPT to troubleshoot a connection issue you face while running your Flutter app on your device. Paste the error 
+message you get and follow the AI's suggested steps to resolve it. Summarize what worked for you in 2-3 lines.
+
+Problem: While running my Flutter application on a physical Android device, I faced a connection issue.
+
+Error Message:
+Error: No devices found.
+Please connect a device or start an emulator.
+
+AI Tool Used:
+ChatGPT
+
+Suggested Troubleshooting Steps:
+1. Enabled Developer Options on my Android phone.
+2. Enabled USB Debugging in Developer Options.
+3. Connected my phone to the computer using a USB data cable.
+4. Selected File Transfer (MTP) mode.
+5. Allowed the USB debugging authorization popup on my phone.
+6. Opened CMD and executed the following commands:
+adb kill-server
+adb start-server
+adb devices
+flutter devices
+7. Restarted Android Studio and ran the Flutter application again.
+
+Summary (2–3 Lines):
+I used ChatGPT to identify and troubleshoot the Flutter device connection problem. By enabling USB debugging, authorizing the computer
+and restarting ADB, I resolved the connection issue. Finally my Android device was detected successfully using the flutter devices 
+command.
+
+Result: Successfully resolved the Flutter device connection issue with the help of ChatGPT.
