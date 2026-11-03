@@ -1,0 +1,34 @@
+Open main.dart in your Flutter project and modify the runApp() call to launch a custom widget called MyCoolApp instead of the default 
+MyApp. Make sure MyCoolApp displays a simple 'Hello from MyCoolApp!' text on the screen.
+
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MaterialApp(
+    debugShowCheckedModeBanner: false,
+    home: MyCoolApp(),
+  ));
+}
+
+class MyCoolApp extends StatelessWidget {
+  const MyCoolApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('My Cool App'),
+        backgroundColor: Colors.purple,
+      ),
+      body: const Center(
+        child: Text(
+          'Hello from MyCoolApp!',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+}
