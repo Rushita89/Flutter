@@ -1,0 +1,17 @@
+Pick any warning or error from your flutter doctor output (real or simulated) and use the official Flutter documentation to find the 
+recommended solution. Write a summary (2-3 sentences) of the fix you found.
+
+Selected warning: Android toolchain – Android SDK licenses not accepted.
+
+Recommended solution:
+According to the official Flutter documentation open CMD or the Android Studio terminal and run:
+flutter doctor --android-licenses
+
+Accept the required licenses by typing y when prompted. Then run:
+flutter doctor
+
+Summary (2–3 Sentences):
+According to the official Flutter documentation, the issue can be resolved by installing Android SDK Command-line Tools through Android 
+Studio's SDK Manager → SDK Tools if they are missing. After installation, I run flutter doctor --android-licenses accept all required 
+licenses and run flutter doctor again to verify the fix.
+
