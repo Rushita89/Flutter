@@ -1,0 +1,22 @@
+Copy an error message from your flutter doctor output and paste it into ChatGPT. Ask for a step-by-step solution then follow the 
+suggested steps to resolve the error. Share the exact prompt you used and whether the AI's answer helped you fix the issue.
+
+I am getting the following error when I run `flutter doctor`:
+
+"[!] Android toolchain - develop for Android devices
+Android license status unknown.
+Run flutter doctor --android-licenses to accept the SDK licenses."
+
+Please provide a step-by-step solution to fix this error on Windows using Android Studio and Flutter.
+
+Steps Suggested by ChatGPT:
+1. Open Android Studio.
+2. Go to Tools → SDK Manager.
+3. Open the SDK Tools tab.
+4. Ensure Android SDK Command-line Tools are installed.
+5. Open CMD or VS Code Terminal.
+6. Run:
+flutter doctor --android-licenses
+7. Type y and press Enter to accept the required licenses.
+8. Run the following command again:
+flutter doctor
