@@ -1,0 +1,65 @@
+Add a new route to your MaterialApp called '/profile' that displays a Scaffold with the title 'My Profile'. Add a button on the home 
+screen that navigates to this '/profile' route when tapped.<br><br><em><strong>Hint:</strong> Use Navigator.pushNamed
+(context, '/profile') inside your button's onPressed.</em>
+
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(
+    MaterialApp(
+      title: 'Foodie Explorer',
+      debugShowCheckedModeBanner: false,
+
+      // Define routes
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const HomeScreen(),
+        '/profile': (context) => const ProfileScreen(),
+      },
+    ),
+  );
+}
+
+// Home Screen
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Foodie Explorer Home'),
+        backgroundColor: Colors.orange,
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.pushNamed(context, '/profile');
+          },
+          child: const Text('Go to Profile'),
+        ),
+      ),
+    );
+  }
+}
+
+// Profile Screen
+class ProfileScreen extends StatelessWidget {
+  const ProfileScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('My Profile'),
+        backgroundColor: Colors.blue,
+      ),
+      body: const Center(
+        child: Text(
+          'Welcome to My Profile!',
+          style: TextStyle(fontSize: 22),
+        ),
+      ),
+    );
+  }
+}
