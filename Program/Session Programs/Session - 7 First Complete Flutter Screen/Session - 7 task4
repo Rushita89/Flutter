@@ -1,0 +1,87 @@
+Design a Flipkart-style product card in Flutter using Container, Text and ElevatedButton widgets: display product name, price and an 
+'Add to Cart' button inside a Card widget.
+
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(
+    const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: ProductScreen(),
+    ),
+  );
+}
+
+class ProductScreen extends StatelessWidget {
+  const ProductScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Flipkart Products'),
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
+      ),
+
+      body: Center(
+        child: Card(
+          elevation: 5,
+          margin: const EdgeInsets.all(20),
+          child: Container(
+            width: 300,
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.laptop,
+                  size: 80,
+                  color: Colors.blue,
+                ),
+
+                const SizedBox(height: 15),
+
+                const Text(
+                  'Laptop',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+
+                const SizedBox(height: 10),
+
+                const Text(
+                  'Price: ₹60,499',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.green,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+
+                const SizedBox(height: 20),
+
+                ElevatedButton(
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Product added to cart!'),
+                      ),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.orange,
+                    foregroundColor: Colors.white,
+                  ),
+                  child: const Text('Add to Cart'),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
