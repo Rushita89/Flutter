@@ -1,0 +1,42 @@
+List 3 ways to validate if your Flutter environment is set up correctly and describe what output or result you expect from each 
+validation step.
+
+Here are 3 ways to validate whether your Flutter environment is set up correctly:
+
+1. Check Flutter Installation:
+Open Command Prompt or Android Studio Terminal and execute:
+flutter --version
+
+Expected Output:
+Flutter 3.x.x
+Channel stable
+Dart 3.x.x
+
+Result: If the Flutter and Dart version information appears, Flutter SDK is installed correctly.
+
+2. Run Flutter Doctor:
+Execute this command:
+flutter doctor
+
+Expected Output:
+[✓] Flutter
+[✓] Android toolchain
+[✓] Android Studio
+[✓] Connected device
+
+Result: Green check marks indicate that the required development tools are installed and configured correctly. Some optional components 
+may show warnings.
+
+3. Create and Run a Flutter Project:
+Execute these commands:
+flutter create insta_clone
+cd insta_clone
+flutter run
+
+Expected Result:
+- The Flutter project is created successfully.
+- The application launches in your Android emulator or physical device.
+- The default Flutter Counter App appears.
+- Pressing the + button increases the counter value.
+
+Result: If the application runs successfully, your Flutter environment is ready for development.
