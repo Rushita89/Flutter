@@ -1,0 +1,73 @@
+Build a simple layout for a Zomato-style food listing screen using Column and Row widgets: show the restaurant name, a 'Like' button 
+and a 'Book Table' button side by side.
+
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(
+    const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: FoodListingScreen(),
+    ),
+  );
+}
+
+class FoodListingScreen extends StatelessWidget {
+  const FoodListingScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Food Listing'),
+        backgroundColor: Colors.red,
+        foregroundColor: Colors.white,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(15),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                const Expanded(
+                  child: Text(
+                    'The Food Palace',
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+
+                ElevatedButton.icon(
+                  onPressed: () {
+                    print('Restaurant Liked!');
+                  },
+                  icon: const Icon(Icons.favorite),
+                  label: const Text('Like'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    foregroundColor: Colors.white,
+                  ),
+                ),
+
+                const SizedBox(width: 8),
+
+                ElevatedButton(
+                  onPressed: () {
+                    print('Table Booked!');
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    foregroundColor: Colors.white,
+                  ),
+                  child: const Text('Book Table'),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
