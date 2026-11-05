@@ -1,0 +1,91 @@
+Refactor an existing ListView.builder-based chat list (showing sender and last message) to use ListView.separated, adding a subtle grey 
+divider between each chat for better readability.
+
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(
+    const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: ChatScreen(),
+    ),
+  );
+}
+
+class ChatScreen extends StatelessWidget {
+  const ChatScreen({super.key});
+
+  final List<Map<String, String>> chats = const [
+    {
+      'sender': 'Rushita',
+      'message': 'Hey! How are you?',
+    },
+    {
+      'sender': 'Riddhi',
+      'message': 'Are we meeting today?',
+    },
+    {
+      'sender': 'Hetvi',
+      'message': 'Please send me the notes.',
+    },
+    {
+      'sender': 'Neha',
+      'message': 'Thank you so much!',
+    },
+    {
+      'sender': 'Priya',
+      'message': 'See you tomorrow.',
+    },
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Chats'),
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
+      ),
+      body: ListView.separated(
+        itemCount: chats.length,
+
+        itemBuilder: (context, index) {
+          return ListTile(
+            leading: CircleAvatar(
+              backgroundColor: Colors.green.shade100,
+              child: Text(
+                chats[index]['sender']![0],
+                style: const TextStyle(
+                  color: Colors.green,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            title: Text(
+              chats[index]['sender']!,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            subtitle: Text(chats[index]['message']!),
+            trailing: const Icon(
+              Icons.chat_bubble_outline,
+              color: Colors.green,
+            ),
+          );
+        },
+
+        separatorBuilder: (context, index) {
+          return const Divider(
+            color: Colors.grey,
+            thickness: 0.5,
+            height: 1,
+            indent: 70,
+            endIndent: 15,
+          );
+        },
+      ),
+    );
+  }
+}
+
