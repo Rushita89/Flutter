@@ -1,0 +1,85 @@
+Add vertical spacing of 12 pixels between each Card in your ListView.builder to improve readability, similar to how Zomato separates 
+restaurant cards.<br><br><em><strong>Hint:</strong> You can use the separatorBuilder property of ListView.separated for this effect.</em>
+
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(
+    const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: IPLTeamScreen(),
+    ),
+  );
+}
+
+class IPLTeamScreen extends StatelessWidget {
+  const IPLTeamScreen({super.key});
+
+  // List of IPL Teams
+  final List<String> teams = const [
+    'Chennai Super Kings',
+    'Mumbai Indians',
+    'Royal Challengers Bengaluru',
+    'Kolkata Knight Riders',
+    'Rajasthan Royals',
+    'Sunrisers Hyderabad',
+    'Delhi Capitals',
+    'Punjab Kings',
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'Trending IPL Teams',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: Colors.deepOrange,
+        centerTitle: true,
+      ),
+
+      body: ListView.separated(
+        padding: const EdgeInsets.all(12),
+
+        // Total number of teams
+        itemCount: teams.length,
+
+        // Generate team cards
+        itemBuilder: (context, index) {
+          return Card(
+            elevation: 4,
+            child: ListTile(
+              leading: const Icon(
+                Icons.sports_cricket,
+                color: Colors.deepOrange,
+                size: 35,
+              ),
+
+              title: Text(
+                teams[index],
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+
+              trailing: const Icon(
+                Icons.arrow_forward_ios,
+                size: 18,
+              ),
+            ),
+          );
+        },
+
+        // Add 12 pixels spacing between cards
+        separatorBuilder: (context, index) {
+          return const SizedBox(height: 12);
+        },
+      ),
+    );
+  }
+}
