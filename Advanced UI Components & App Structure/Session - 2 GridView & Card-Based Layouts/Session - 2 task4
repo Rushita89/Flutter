@@ -1,0 +1,146 @@
+Replace the category icons in your cards with network images (e.g., use real food images from the internet) and ensure the images are 
+displayed in a circular shape.
+
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(
+    const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: FoodCategoryScreen(),
+    ),
+  );
+}
+
+class FoodCategoryScreen extends StatelessWidget {
+  const FoodCategoryScreen({super.key});
+
+  final List<Map<String, String>> categories = const [
+    {
+      'name': 'Pizza',
+      'image':
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQp3oDAe9gjQCK2QLL9EC5_QBbS6VJkJXtuxNgNwAzSWQ&s=10',
+    },
+    {
+      'name': 'Biryani',
+      'image':
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRH4rspKcOUfaT2innxVuZ3XbcSkAtINiHPkd3RZjga-g&s=10',
+    },
+    {
+      'name': 'Burger',
+      'image':
+      'https://images.unsplash.com/photo-1568901346375-23c9450c58cd',
+    },
+    {
+      'name': 'Desserts',
+      'image':
+      'https://images.unsplash.com/photo-1551024506-0bccd828d307',
+    },
+    {
+      'name': 'Chinese',
+      'image':
+      'https://images.unsplash.com/photo-1563245372-f21724e3856d',
+    },
+    {
+      'name': 'South Indian',
+      'image':
+      'https://images.unsplash.com/photo-1589301760014-d929f3979dbc',
+    },
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    int crossAxisCount = screenWidth >= 600 ? 3 : 2;
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'Food Categories',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: Colors.deepOrange,
+        centerTitle: true,
+      ),
+
+      body: Padding(
+        padding: const EdgeInsets.all(12),
+
+        child: GridView.count(
+          crossAxisCount: crossAxisCount,
+          crossAxisSpacing: 12,
+          mainAxisSpacing: 12,
+          childAspectRatio: 1.2,
+
+          children: categories.map((category) {
+            return Card(
+              elevation: 4,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Circular Network Image
+                  ClipOval(
+                    child: Image.network(
+                      category['image']!,
+                      width: 85,
+                      height: 85,
+                      fit: BoxFit.cover,
+
+                      // Loading indicator
+                      loadingBuilder:
+                          (context, child, loadingProgress) {
+                        if (loadingProgress == null) {
+                          return child;
+                        }
+
+                        return const SizedBox(
+                          width: 85,
+                          height: 85,
+                          child: Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+                      },
+
+                      // Error handling
+                      errorBuilder: (context, error, stackTrace) {
+                        return Container(
+                          width: 85,
+                          height: 85,
+                          color: Colors.orange.shade100,
+                          child: const Icon(
+                            Icons.fastfood,
+                            size: 40,
+                            color: Colors.deepOrange,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+
+                  const SizedBox(height: 12),
+
+                  Text(
+                    category['name']!,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }).toList(),
+        ),
+      ),
+    );
+  }
+}
