@@ -1,0 +1,93 @@
+Modify your PlaylistScreen so that the divider between playlist items is styled with a custom color (e.g., green) and thickness of 2 
+pixels to match Spotify's branding.<br><br><em><strong>Hint:</strong> Use the Divider widget's color and thickness properties inside the 
+separatorBuilder.</em>
+
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(
+    const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: PlaylistScreen(),
+    ),
+  );
+}
+
+class PlaylistScreen extends StatelessWidget {
+  const PlaylistScreen({super.key});
+
+  // List of 10 playlists
+  final List<String> playlists = const [
+    "Today's Top Hits",
+    "Chill Vibes",
+    "Workout Motivation",
+    "Daily Mix",
+    "Romantic Hits",
+    "Trending Songs",
+    "Party Time",
+    "Relaxing Music",
+    "Bollywood Hits",
+    "Acoustic Favorites",
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+
+      appBar: AppBar(
+        title: const Text(
+          'My Playlists',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: Colors.black,
+        centerTitle: true,
+      ),
+
+      body: ListView.separated(
+        padding: const EdgeInsets.all(12),
+
+        itemCount: playlists.length,
+
+        // Display playlist items
+        itemBuilder: (context, index) {
+          return ListTile(
+            leading: const Icon(
+              Icons.music_note,
+              color: Color(0xFF1DB954),
+              size: 30,
+            ),
+
+            title: Text(
+              playlists[index],
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 17,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+
+            trailing: const Icon(
+              Icons.play_circle_fill,
+              color: Color(0xFF1DB954),
+              size: 30,
+            ),
+          );
+        },
+
+        // Custom green divider
+        separatorBuilder: (context, index) {
+          return const Divider(
+            color: Color(0xFF1DB954),
+            thickness: 2,
+            height: 2,
+            indent: 55,
+          );
+        },
+      ),
+    );
+  }
+}
