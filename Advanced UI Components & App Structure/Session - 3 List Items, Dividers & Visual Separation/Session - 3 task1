@@ -1,0 +1,93 @@
+Create a Flutter screen called PlaylistScreen that displays a vertical list of 10 Spotify-style playlist names using ListView.separated, 
+adding a thin divider between each playlist.
+
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(
+    const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: PlaylistScreen(),
+    ),
+  );
+}
+
+class PlaylistScreen extends StatelessWidget {
+  const PlaylistScreen({super.key});
+
+  // List of 10 Spotify-style playlists
+  final List<String> playlists = const [
+    'Today\'s Top Hits',
+    'Chill Vibes',
+    'Workout Motivation',
+    'Daily Mix',
+    'Romantic Hits',
+    'Trending Songs',
+    'Party Time',
+    'Relaxing Music',
+    'Bollywood Hits',
+    'Acoustic Favorites',
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+
+      appBar: AppBar(
+        title: const Text(
+          'My Playlists',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: Colors.black,
+        centerTitle: true,
+      ),
+
+      body: ListView.separated(
+        padding: const EdgeInsets.all(12),
+
+        // Total number of playlists
+        itemCount: playlists.length,
+
+        // Display each playlist
+        itemBuilder: (context, index) {
+          return ListTile(
+            leading: const Icon(
+              Icons.music_note,
+              color: Colors.green,
+              size: 30,
+            ),
+
+            title: Text(
+              playlists[index],
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 17,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+
+            trailing: const Icon(
+              Icons.play_circle_fill,
+              color: Colors.green,
+              size: 30,
+            ),
+          );
+        },
+
+        // Thin divider between playlists
+        separatorBuilder: (context, index) {
+          return const Divider(
+            color: Colors.grey,
+            thickness: 0.5,
+            height: 1,
+            indent: 55,
+          );
+        },
+      ),
+    );
+  }
+}
