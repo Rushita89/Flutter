@@ -1,0 +1,164 @@
+Build a Flipkart-style product list using ListView.separated, where each product card shows product name and price and group the products 
+visually by category using a thicker divider and a category label above each group.<br><br><em><strong>Hint:</strong> Use a combination of 
+ListView.separated and conditional logic in separatorBuilder to insert a category label and thicker divider when the category changes.</em>
+
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(
+    const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: ProductScreen(),
+    ),
+  );
+}
+
+class ProductScreen extends StatelessWidget {
+  const ProductScreen({super.key});
+
+  // Product List
+  final List<Map<String, dynamic>> products = const [
+    {
+      'category': 'Electronics',
+      'name': 'Samsung Smartphone',
+      'price': 15999,
+    },
+    {
+      'category': 'Electronics',
+      'name': 'Wireless Headphones',
+      'price': 1999,
+    },
+    {
+      'category': 'Electronics',
+      'name': 'Bluetooth Speaker',
+      'price': 2499,
+    },
+    {
+      'category': 'Fashion',
+      'name': 'Men T-Shirt',
+      'price': 599,
+    },
+    {
+      'category': 'Fashion',
+      'name': 'Women Kurti',
+      'price': 899,
+    },
+    {
+      'category': 'Fashion',
+      'name': 'Sports Shoes',
+      'price': 1499,
+    },
+    {
+      'category': 'Home Appliances',
+      'name': 'Electric Kettle',
+      'price': 1299,
+    },
+    {
+      'category': 'Home Appliances',
+      'name': 'Mixer Grinder',
+      'price': 2499,
+    },
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'Flipkart Products',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: Colors.blue,
+        centerTitle: true,
+      ),
+
+      body: ListView.separated(
+        padding: const EdgeInsets.all(12),
+
+        itemCount: products.length,
+
+        // Product Card
+        itemBuilder: (context, index) {
+          final product = products[index];
+
+          return Card(
+            elevation: 3,
+            margin: const EdgeInsets.symmetric(
+              vertical: 4,
+            ),
+            child: ListTile(
+              leading: const Icon(
+                Icons.shopping_bag,
+                color: Colors.blue,
+                size: 35,
+              ),
+
+              title: Text(
+                product['name'],
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              ),
+
+              subtitle: Text(
+                'Category: ${product['category']}',
+              ),
+
+              trailing: Text(
+                '₹${product['price']}',
+                style: const TextStyle(
+                  color: Colors.green,
+                  fontSize: 17,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          );
+        },
+
+        // Category separator
+        separatorBuilder: (context, index) {
+          final currentCategory = products[index]['category'];
+          final nextCategory = products[index + 1]['category'];
+
+          if (currentCategory != nextCategory) {
+            // Thick divider between categories
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Divider(
+                  color: Colors.blue,
+                  thickness: 3,
+                  height: 20,
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Text(
+                    nextCategory,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue,
+                    ),
+                  ),
+                ),
+              ],
+            );
+          } else {
+            // Thin divider between products
+            return const Divider(
+              color: Colors.grey,
+              thickness: 0.5,
+              height: 10,
+            );
+          }
+        },
+      ),
+    );
+  }
+}
