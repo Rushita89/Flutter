@@ -1,0 +1,181 @@
+Modify your ListView to display each IPL team inside a Card widget with padding and a leading Icon (use Icons.sports_cricket), so the 
+list looks similar to a sports app's team list.<br><br><em><strong>Hint:</strong> Use ListView's children property and wrap each Card 
+with Padding for better spacing.</em>
+
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'IPL Teams',
+      theme: ThemeData(
+        primarySwatch: Colors.orange,
+      ),
+      home: const IPLTeamScreen(),
+    );
+  }
+}
+
+class IPLTeamScreen extends StatelessWidget {
+  const IPLTeamScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'Trending IPL Teams',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        backgroundColor: Colors.deepOrange,
+        centerTitle: true,
+      ),
+
+      body: ListView(
+        padding: const EdgeInsets.all(12),
+
+        children: const [
+
+          // Team 1
+          Padding(
+            padding: EdgeInsets.all(8),
+            child: Card(
+              elevation: 4,
+              child: ListTile(
+                leading: Icon(
+                  Icons.sports_cricket,
+                  color: Colors.deepOrange,
+                  size: 35,
+                ),
+                title: Text('Chennai Super Kings'),
+              ),
+            ),
+          ),
+
+          // Team 2
+          Padding(
+            padding: EdgeInsets.all(8),
+            child: Card(
+              elevation: 4,
+              child: ListTile(
+                leading: Icon(
+                  Icons.sports_cricket,
+                  color: Colors.deepOrange,
+                  size: 35,
+                ),
+                title: Text('Mumbai Indians'),
+              ),
+            ),
+          ),
+
+          // Team 3
+          Padding(
+            padding: EdgeInsets.all(8),
+            child: Card(
+              elevation: 4,
+              child: ListTile(
+                leading: Icon(
+                  Icons.sports_cricket,
+                  color: Colors.deepOrange,
+                  size: 35,
+                ),
+                title: Text('Royal Challengers Bengaluru'),
+              ),
+            ),
+          ),
+
+          // Team 4
+          Padding(
+            padding: EdgeInsets.all(8),
+            child: Card(
+              elevation: 4,
+              child: ListTile(
+                leading: Icon(
+                  Icons.sports_cricket,
+                  color: Colors.deepOrange,
+                  size: 35,
+                ),
+                title: Text('Kolkata Knight Riders'),
+              ),
+            ),
+          ),
+
+          // Team 5
+          Padding(
+            padding: EdgeInsets.all(8),
+            child: Card(
+              elevation: 4,
+              child: ListTile(
+                leading: Icon(
+                  Icons.sports_cricket,
+                  color: Colors.deepOrange,
+                  size: 35,
+                ),
+                title: Text('Rajasthan Royals'),
+              ),
+            ),
+          ),
+
+          // Team 6
+          Padding(
+            padding: EdgeInsets.all(8),
+            child: Card(
+              elevation: 4,
+              child: ListTile(
+                leading: Icon(
+                  Icons.sports_cricket,
+                  color: Colors.deepOrange,
+                  size: 35,
+                ),
+                title: Text('Sunrisers Hyderabad'),
+              ),
+            ),
+          ),
+
+          // Team 7
+          Padding(
+            padding: EdgeInsets.all(8),
+            child: Card(
+              elevation: 4,
+              child: ListTile(
+                leading: Icon(
+                  Icons.sports_cricket,
+                  color: Colors.deepOrange,
+                  size: 35,
+                ),
+                title: Text('Delhi Capitals'),
+              ),
+            ),
+          ),
+
+          // Team 8
+          Padding(
+            padding: EdgeInsets.all(8),
+            child: Card(
+              elevation: 4,
+              child: ListTile(
+                leading: Icon(
+                  Icons.sports_cricket,
+                  color: Colors.deepOrange,
+                  size: 35,
+                ),
+                title: Text('Punjab Kings'),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
