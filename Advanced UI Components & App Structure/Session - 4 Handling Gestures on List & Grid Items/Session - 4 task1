@@ -1,4 +1,0 @@
-<p>Make a long-press on any food card open a `showModalBottomSheet` with the item name as heading and two choices, 'Add to order' and 
-'Cancel'. 'Add to order' must call `add(FoodItem item)` on a new `OrderProvider` (in `lib/providers/order_provider.dart`) that raises 
-that item's quantity in a map and calls `notifyListeners()`. Then show a `SnackBar` such as 'Masala Dosa added (x2)'. Hint: Wrap 
-`MaterialApp` in `ChangeNotifierProvider` and use `context.read<OrderProvider>()` in the callback.</p>
