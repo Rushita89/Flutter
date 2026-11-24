@@ -1,0 +1,397 @@
+<p>Finish `expense_tracker` by adding a 'Rows: n' line to each table's Card, counted with `SELECT COUNT(*)`, so both show 'Rows: 0'. Test: 
+run the app three times and do one hot restart; each table must appear exactly once with the same columns. Submit the project folder 
+`expense_tracker`. Hint: `Sqflite.firstIntValue(await db.rawQuery('SELECT COUNT(*) FROM $table'))` returns the number directly.</p>
+
+import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
+
+void main() {
+  runApp(
+    const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: ExpenseTrackerScreen(),
+    ),
+  );
+}
+
+// HOME SCREEN
+class ExpenseTrackerScreen extends StatefulWidget {
+  const ExpenseTrackerScreen({super.key});
+
+  @override
+  State<ExpenseTrackerScreen> createState() =>
+      _ExpenseTrackerScreenState();
+}
+
+class _ExpenseTrackerScreenState
+    extends State<ExpenseTrackerScreen> {
+
+  Database? database;
+
+  String databaseStatus = 'Opening database...';
+  String databasePath = '';
+
+  @override
+  void initState() {
+    super.initState();
+    openExpenseDatabase();
+  }
+
+  // OPEN DATABASE AND CREATE TABLES
+  Future<void> openExpenseDatabase() async {
+    try {
+      String folder = await getDatabasesPath();
+      String path = '$folder/expense_tracker.db';
+
+      database = await openDatabase(
+        path,
+        version: 2,
+
+        // Create tables only for a new database
+        onCreate: (db, version) async {
+          await db.execute('''
+            CREATE TABLE IF NOT EXISTS expenses (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              title TEXT NOT NULL,
+              amount REAL NOT NULL,
+              category TEXT NOT NULL,
+              date TEXT NOT NULL
+            )
+          ''');
+
+          await db.execute('''
+            CREATE TABLE IF NOT EXISTS categories (
+              id INTEGER PRIMARY KEY AUTOINCREMENT,
+              name TEXT NOT NULL UNIQUE
+            )
+          ''');
+        },
+
+        // Upgrade existing version 1 database
+        onUpgrade: (db, oldVersion, newVersion) async {
+          if (oldVersion < 2) {
+            await db.execute('''
+              CREATE TABLE IF NOT EXISTS categories (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL UNIQUE
+              )
+            ''');
+          }
+        },
+      );
+
+      if (!mounted) return;
+
+      setState(() {
+        databaseStatus = 'Database ready';
+        databasePath = database!.path;
+      });
+
+    } catch (e) {
+      if (!mounted) return;
+
+      setState(() {
+        databaseStatus = 'Database error: $e';
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    database?.close();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Expense Tracker'),
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
+      ),
+
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(
+                Icons.storage,
+                size: 70,
+                color: Colors.blue,
+              ),
+
+              const SizedBox(height: 20),
+
+              Text(
+                databaseStatus,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.green,
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              const Text(
+                'Database Path:',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+
+              const SizedBox(height: 10),
+
+              SelectableText(
+                databasePath.isEmpty
+                    ? 'Loading database path...'
+                    : databasePath,
+                textAlign: TextAlign.center,
+              ),
+
+              const SizedBox(height: 30),
+
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  icon: const Icon(Icons.table_chart),
+                  label: const Text('View Database Schema'),
+
+                  onPressed: database == null
+                      ? null
+                      : () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SchemaScreen(
+                                database: database!,
+                              ),
+                            ),
+                          );
+                        },
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+// SCHEMA SCREEN
+class SchemaScreen extends StatefulWidget {
+  final Database database;
+
+  const SchemaScreen({
+    super.key,
+    required this.database,
+  });
+
+  @override
+  State<SchemaScreen> createState() => _SchemaScreenState();
+}
+
+class _SchemaScreenState extends State<SchemaScreen> {
+
+  List<Map<String, dynamic>> tables = [];
+
+  bool isLoading = true;
+  String errorMessage = '';
+
+  @override
+  void initState() {
+    super.initState();
+    getDatabaseSchema();
+  }
+
+  // READ TABLE NAMES, COLUMNS AND ROW COUNTS
+  Future<void> getDatabaseSchema() async {
+    try {
+      // Get all user-created tables
+      List<Map<String, dynamic>> tableList =
+          await widget.database.rawQuery('''
+            SELECT name
+            FROM sqlite_master
+            WHERE type = 'table'
+            AND name NOT LIKE 'sqlite_%'
+            ORDER BY name
+          ''');
+
+      List<Map<String, dynamic>> result = [];
+
+      // Read each table
+      for (var table in tableList) {
+        String tableName = table['name'];
+
+        // Get column information
+        List<Map<String, dynamic>> columns =
+            await widget.database.rawQuery(
+          'PRAGMA table_info("$tableName")',
+        );
+
+        // Count rows in current table
+        int rowCount = Sqflite.firstIntValue(
+              await widget.database.rawQuery(
+                'SELECT COUNT(*) FROM "$tableName"',
+              ),
+            ) ??
+            0;
+
+        result.add({
+          'tableName': tableName,
+          'columns': columns,
+          'rowCount': rowCount,
+        });
+      }
+
+      if (!mounted) return;
+
+      setState(() {
+        tables = result;
+        isLoading = false;
+      });
+
+    } catch (e) {
+      if (!mounted) return;
+
+      setState(() {
+        errorMessage = 'Error loading schema: $e';
+        isLoading = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Database Schema'),
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
+      ),
+
+      body: isLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : errorMessage.isNotEmpty
+              ? Center(
+                  child: Text(errorMessage),
+                )
+              : tables.isEmpty
+                  ? const Center(
+                      child: Text('No tables found'),
+                    )
+                  : ListView.builder(
+                      padding: const EdgeInsets.all(16),
+                      itemCount: tables.length,
+
+                      itemBuilder: (context, index) {
+                        final table = tables[index];
+
+                        final String tableName =
+                            table['tableName'];
+
+                        final List columns =
+                            table['columns'];
+
+                        final int rowCount =
+                            table['rowCount'];
+
+                        return Card(
+                          elevation: 4,
+                          margin: const EdgeInsets.only(
+                            bottom: 16,
+                          ),
+
+                          child: Padding(
+                            padding: const EdgeInsets.all(16),
+
+                            child: Column(
+                              crossAxisAlignment:
+                                  CrossAxisAlignment.start,
+
+                              children: [
+                                // TABLE NAME
+                                Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.table_chart,
+                                      color: Colors.blue,
+                                    ),
+
+                                    const SizedBox(width: 10),
+
+                                    Text(
+                                      tableName,
+                                      style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+
+                                const Divider(),
+
+                                // DYNAMIC COLUMNS
+                                ...columns.map((column) {
+                                  String columnName =
+                                      column['name'] ?? '';
+
+                                  String columnType =
+                                      column['type'] ?? '';
+
+                                  return Padding(
+                                    padding:
+                                        const EdgeInsets.symmetric(
+                                      vertical: 5,
+                                    ),
+
+                                    child: Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.arrow_right,
+                                          color: Colors.blue,
+                                        ),
+
+                                        const SizedBox(width: 5),
+
+                                        Text(
+                                          '$columnName ($columnType)',
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }).toList(),
+
+                                const Divider(),
+
+                                // ROW COUNT
+                                Text(
+                                  'Rows: $rowCount',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.green,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+    );
+  }
+}
