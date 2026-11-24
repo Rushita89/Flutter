@@ -1,0 +1,169 @@
+<p>Build a Flutter app named `study_planner` with a Switch labelled 'Internet available' (on by default) and a 'Fetch my tasks' button. 
+With the switch on, pressing the button shows a CircularProgressIndicator for 2 seconds, then 6 hard-coded tasks such as 'Maths - 
+Trigonometry - 45 min' in a ListView. With the switch off, it shows 'No internet and no saved data'. Hint: Use an `async` method with 
+`await Future.delayed(const Duration(seconds: 2))`, then `setState`. Constraint: Use no packages.</p>
+
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(
+    const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: StudyPlannerScreen(),
+    ),
+  );
+}
+
+class StudyPlannerScreen extends StatefulWidget {
+  const StudyPlannerScreen({super.key});
+
+  @override
+  State<StudyPlannerScreen> createState() =>
+      _StudyPlannerScreenState();
+}
+
+class _StudyPlannerScreenState extends State<StudyPlannerScreen> {
+
+  bool internetAvailable = true;
+  bool isLoading = false;
+
+  List<String> tasks = [];
+
+  // Hard-coded tasks
+  final List<String> allTasks = [
+    'Maths - Trigonometry - 45 min',
+    'Science - Physics - 60 min',
+    'English - Grammar - 30 min',
+    'Computer - Flutter - 60 min',
+    'Gujarati - Reading - 30 min',
+    'Social Science - History - 45 min',
+  ];
+
+  // Fetch tasks using async and await
+  Future<void> fetchTasks() async {
+
+    if (!internetAvailable) {
+      setState(() {
+        tasks.clear();
+        isLoading = false;
+      });
+      return;
+    }
+
+    setState(() {
+      isLoading = true;
+      tasks.clear();
+    });
+
+    // Wait for 2 seconds
+    await Future.delayed(
+      const Duration(seconds: 2),
+    );
+
+    setState(() {
+      tasks = allTasks;
+      isLoading = false;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+
+      appBar: AppBar(
+        title: const Text('Study Planner'),
+        centerTitle: true,
+        backgroundColor: Colors.blue,
+        foregroundColor: Colors.white,
+      ),
+
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+
+        child: Column(
+          children: [
+
+            // Internet Available Switch
+            SwitchListTile(
+              title: const Text(
+                'Internet available',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+
+              value: internetAvailable,
+
+              onChanged: (value) {
+                setState(() {
+                  internetAvailable = value;
+                  tasks.clear();
+                });
+              },
+            ),
+
+            const SizedBox(height: 15),
+
+            // Fetch My Tasks Button
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: isLoading ? null : fetchTasks,
+                child: const Text(
+                  'Fetch my tasks',
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 25),
+
+            // Loading Indicator
+            if (isLoading)
+              const CircularProgressIndicator(),
+
+            // No Internet Message
+            if (!internetAvailable && !isLoading)
+              const Text(
+                'No internet and no saved data',
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.red,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+
+            // Display Tasks
+            if (!isLoading &&
+                internetAvailable &&
+                tasks.isNotEmpty)
+              Expanded(
+                child: ListView.builder(
+                  itemCount: tasks.length,
+
+                  itemBuilder: (context, index) {
+                    return Card(
+                      margin: const EdgeInsets.symmetric(
+                        vertical: 6,
+                      ),
+
+                      child: ListTile(
+                        leading: const Icon(
+                          Icons.task_alt,
+                          color: Colors.green,
+                        ),
+
+                        title: Text(tasks[index]),
+                      ),
+                    );
+                  },
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}
